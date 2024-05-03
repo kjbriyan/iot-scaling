@@ -1,5 +1,6 @@
 package com.example.iot_test
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -67,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                     override fun messageArrived(topic: String?, message: MqttMessage?) {
                         val payload = message?.payload?.toString(Charsets.UTF_8)
                         Log.d("MQTT LOGS", "Received message on topic $topic: $payload")
-                        updatePieChart(payload?.toFloatOrNull() ?: 0f)
+                        weight.text = "WEIGHT \n${payload?.toFloatOrNull() ?: 0f}"
                     }
 
                     override fun deliveryComplete(token: IMqttDeliveryToken?) {
@@ -79,10 +80,6 @@ class MainActivity : AppCompatActivity() {
                 Log.e("MQTT LOGS", "Failed to connect to MQTT broker: $exception")
             }
         })
-    }
-
-    private fun updatePieChart(value: Float) {
-        weight.text = "WEIGHT \n$value"
     }
 
     override fun onDestroy() {
